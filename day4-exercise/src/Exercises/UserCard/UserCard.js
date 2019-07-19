@@ -1,35 +1,35 @@
 import React from 'react';
 import families from '../../data.json';
+import styles from './UserCard.module.scss';
 import UserSelfCard from './UserSelfCard';
+import { getPersonById } from '../../utils.js';
 
 const UserCard = ({ user }) => {
-
-  // let [width, setWidth] = React.useState(document.body.clientWidth);
-
-  // React.useEffect(() => {
-  //   window.addEventListener("resize", () => {
-  //     setWidth(document.body.clientWidth);
-  //   });
-  // }, [document.body.clientWidth]);
   return (
-    <div>
+    <div className={styles.container}>
       <UserSelfCard user={user} />
-
-      <div style={{ backgroundColor: 'lightcyan', width: "25%", margin: 16, padding: 16, borderRadius: 15, marginRight: "auto", marginLeft: "auto" }}>
-        <h4 style={{ margin: 0 }}> Married to </h4>
-        <a style={{ margin: 0, marginTop: 8 }} href={user.marriedTo} >{user.marriedTo} </a>
+      <div className={styles.card}>
+        <p className={styles.title}>Married to</p>
+        {user.marriedTo.map(pId => (
+          <UserSelfCard
+            hoverable={true}
+            secondary={true}
+            user={getPersonById(families, pId)}
+          />
+        ))}
       </div>
-
-
-      <div style={{ backgroundColor: 'lightcyan', width: "25%", margin: 16, padding: 16, borderRadius: 15, marginRight: "auto", marginLeft: "auto" }}>
-        <h4 style={{ margin: 0 }}> Children </h4>
-        <div style={{ flexDirection: "column" , display : "flex" }}>
-          {user.children.map(id => <a href={`#${id}`}> {id} </a>)}
-        </div>
+      <div className={styles.card}>
+        <p className={styles.title}>Children</p>
+        {user.children.map(pId => (
+          <UserSelfCard
+            hoverable={true}
+            secondary={true}
+            user={getPersonById(families, pId)}
+          />
+        ))}
       </div>
-
     </div>
-  )
+  );
 };
 
 export default UserCard;
